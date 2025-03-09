@@ -1,5 +1,5 @@
 {
-	"name": "your-module-name",
+	"name": "companion-module-file-download",
 	"version": "0.1.0",
 	"main": "dist/main.js",
 	"type": "module",
@@ -23,6 +23,7 @@
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.1.1",
+		"@types/jest": "^29.5.14",
 		"@types/node": "^22.10.2",
 		"eslint": "^9.17.0",
 		"husky": "^9.1.7",

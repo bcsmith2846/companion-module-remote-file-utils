@@ -1,18 +1,19 @@
 import { InstanceBase, runEntrypoint, InstanceStatus, SomeCompanionConfigField } from '@companion-module/base'
-import { GetConfigFields, type ModuleConfig } from './config.js'
+import { GetConfigFields, type FileDownloadConfig } from './config.js'
 import { UpdateVariableDefinitions } from './variables.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
 import { UpdateFeedbacks } from './feedbacks.js'
 
-export class ModuleInstance extends InstanceBase<ModuleConfig> {
-	config!: ModuleConfig // Setup in init()
+export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
+	config!: FileDownloadConfig // Setup in init()
+	downloaded: boolean = false
 
 	constructor(internal: unknown) {
 		super(internal)
 	}
 
-	async init(config: ModuleConfig): Promise<void> {
+	async init(config: FileDownloadConfig): Promise<void> {
 		this.config = config
 
 		this.updateStatus(InstanceStatus.Ok)
@@ -26,8 +27,9 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 		this.log('debug', 'destroy')
 	}
 
-	async configUpdated(config: ModuleConfig): Promise<void> {
+	async configUpdated(config: FileDownloadConfig): Promise<void> {
 		this.config = config
+		this.setVariableValues({ ...config, downloaded: this.downloaded })
 	}
 
 	// Return config fields for web config
@@ -48,4 +50,4 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	}
 }
 
-runEntrypoint(ModuleInstance, UpgradeScripts)
+runEntrypoint(FileDownloadInstance, UpgradeScripts)

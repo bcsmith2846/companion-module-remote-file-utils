@@ -1,16 +1,16 @@
 {
-	"id": "your-module-name",
-	"name": "your-module-name",
-	"shortname": "module-shortname",
-	"description": "A short one line description of your module",
-	"version": "0.0.0",
+	"id": "companion-module-file-download",
+	"name": "companion-module-file-download",
+	"shortname": "file-download",
+	"description": "A module to download files from a URL to the Companion server.",
+	"version": "0.1.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-your-module-name.git",
-	"bugs": "https://github.com/bitfocus/companion-module-your-module-name/issues",
+	"repository": "git+https://github.com/bcsmith/companion-module-file-download.git",
+	"bugs": "https://github.com/bitfocus/companion-module-file-download/issues",
 	"maintainers": [
 		{
-			"name": "Your name",
-			"email": "Your email"
+			"name": "Brenden Smith",
+			"email": "brenden@brendensmith.net"
 		}
 	],
 	"runtime": {
@@ -20,7 +20,7 @@
 		"entrypoint": "../dist/main.js"
 	},
 	"legacyIds": [],
-	"manufacturer": "Your company",
-	"products": ["Your product"],
+	"manufacturer": "Generic",
+	"products": ["File download"],
 	"keywords": []
 }
