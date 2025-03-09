@@ -35,6 +35,11 @@ export function UpdateActions(self: FileDownloadInstance): void {
 					return
 				const url: string = event.options.url
 				const path: string = event.options.file
+				self.setVariableValues({ url, file: path })
+				self.file = path
+				self.url = url
+				self.downloading = true
+				self.checkFeedbacks('downloading')
 				get(url, (res) => {
 					stat(path, (err, stats) => {
 						if (err) {
@@ -42,6 +47,9 @@ export function UpdateActions(self: FileDownloadInstance): void {
 								'error',
 								`Error getting file stats: ${err.message}\n\nPath is likely pointing to a file in a nonexistent directory or to a non-existent directory itself.`,
 							)
+							self.downloaded = false
+							self.downloading = false
+							self.checkFeedbacks('downloading', 'downloaded')
 							return
 						}
 						if (stats.isFile()) {
@@ -50,6 +58,9 @@ export function UpdateActions(self: FileDownloadInstance): void {
 							res.pipe(ws)
 							ws.on('finish', () => {
 								ws.close()
+								self.downloaded = true
+								self.downloading = false
+								self.checkFeedbacks('downloading', 'downloaded')
 								console.log(`File downloaded successfully to ${path}!`)
 							})
 						} else if (stats.isDirectory()) {
@@ -60,10 +71,15 @@ export function UpdateActions(self: FileDownloadInstance): void {
 							ws.on('finish', () => {
 								ws.close()
 								console.log(`File downloaded successfully to ${realpath}!`)
+								self.downloaded = true
+								self.downloading = false
+								self.checkFeedbacks('downloading', 'downloaded')
 							})
 						} else {
 							self.log('error', 'Path is neither a file nor a directory.')
-							return
+							self.downloaded = false
+							self.downloading = false
+							self.checkFeedbacks('downloading', 'downloaded')
 						}
 					})
 				})

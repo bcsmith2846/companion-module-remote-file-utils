@@ -4,10 +4,15 @@ import { UpdateVariableDefinitions } from './variables.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
 import { UpdateFeedbacks } from './feedbacks.js'
+import { stat } from 'fs'
 
 export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 	config!: FileDownloadConfig // Setup in init()
 	downloaded: boolean = false
+	downloading: boolean = false
+	url: string | undefined = undefined
+	file: string | undefined = undefined
+	timer: NodeJS.Timeout | undefined = undefined
 
 	constructor(internal: unknown) {
 		super(internal)
@@ -21,15 +26,55 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
+		this.timer = setInterval(() => {
+			const file = this.getVariableValue('file')?.toString()
+			if (!file) return
+			stat(file, (err, stats) => {
+				if (err) {
+					this.log(
+						'error',
+						`Error getting file stats: ${err.message}\n\nPath is likely pointing to a file in a nonexistent directory or to a non-existent directory itthis.`,
+					)
+					this.downloaded = false
+				} else {
+					if (stats.isFile()) {
+						this.downloaded = true
+					} else if (stats.isDirectory()) {
+						const realpath = `${this.getVariableValue('file')}/${this.getVariableValue('url')?.toString().split('/').pop()}`
+						stat(realpath, (err, stats) => {
+							if (err) {
+								this.downloaded = false
+								this.downloading = false
+								this.checkFeedbacks('downloading', 'downloaded')
+							}
+							if (stats.isFile()) {
+								this.downloaded = true
+								this.downloading = false
+								this.checkFeedbacks('downloading', 'downloaded')
+							} else {
+								this.downloaded = false
+								this.downloading = false
+								this.checkFeedbacks('downloading', 'downloaded')
+							}
+						})
+					} else {
+						this.downloaded = false
+						this.checkFeedbacks('downloading', 'downloaded')
+					}
+				}
+			})
+		}, 3000)
+		this.setVariableValues({ url: this.url, file: this.file, downloaded: this.downloaded })
 	}
 	// When module gets deleted
 	async destroy(): Promise<void> {
+		if (this.timer) clearInterval(this.timer)
 		this.log('debug', 'destroy')
 	}
 
 	async configUpdated(config: FileDownloadConfig): Promise<void> {
 		this.config = config
-		this.setVariableValues({ ...config, downloaded: this.downloaded })
+		this.setVariableValues({ ...config })
 	}
 
 	// Return config fields for web config

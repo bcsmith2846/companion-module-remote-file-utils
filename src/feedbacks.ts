@@ -3,30 +3,33 @@ import type { FileDownloadInstance } from './main.js'
 
 export function UpdateFeedbacks(self: FileDownloadInstance): void {
 	self.setFeedbackDefinitions({
-		ChannelState: {
-			name: 'Example Feedback',
+		downloading: {
+			name: 'Downloading',
 			type: 'boolean',
+			showInvert: false,
+
 			defaultStyle: {
 				bgcolor: combineRgb(255, 0, 0),
 				color: combineRgb(0, 0, 0),
 			},
-			options: [
-				{
-					id: 'num',
-					type: 'number',
-					label: 'Test',
-					default: 5,
-					min: 0,
-					max: 10,
-				},
-			],
-			callback: (feedback) => {
-				console.log('Hello world!', feedback.options.num)
-				if (Number(feedback.options.num) > 5) {
-					return true
-				} else {
-					return false
-				}
+			options: [],
+			callback: () => {
+				self.log('info', 'FEEDBACK1')
+				return self.downloading
+			},
+		},
+		downloaded: {
+			name: 'Downloaded',
+			type: 'boolean',
+			showInvert: false,
+			defaultStyle: {
+				bgcolor: combineRgb(0, 255, 0),
+				color: combineRgb(0, 0, 0),
+			},
+			options: [],
+			callback: () => {
+				self.log('info', 'FEEDBACK')
+				return self.downloaded && !self.downloading
 			},
 		},
 	})
