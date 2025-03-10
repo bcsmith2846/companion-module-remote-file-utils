@@ -40,6 +40,7 @@ export function UpdateActions(self: FileDownloadInstance): void {
 				self.url = url
 				self.downloading = true
 				self.checkFeedbacks('downloading')
+				self.pauseTimer()
 				get(url, (res) => {
 					stat(path, (err, stats) => {
 						if (err) {
@@ -49,10 +50,11 @@ export function UpdateActions(self: FileDownloadInstance): void {
 							)
 							self.downloaded = false
 							self.downloading = false
+							self.unpauseTimer()
 							self.checkFeedbacks('downloading', 'downloaded')
 							return
 						}
-						if (stats.isFile()) {
+						if (stats?.isFile()) {
 							self.log('warn', `File ${path} already exists. Overwriting with ${url}...`)
 							const ws = createWriteStream(path)
 							res.pipe(ws)
@@ -60,10 +62,11 @@ export function UpdateActions(self: FileDownloadInstance): void {
 								ws.close()
 								self.downloaded = true
 								self.downloading = false
+								self.unpauseTimer()
 								self.checkFeedbacks('downloading', 'downloaded')
 								console.log(`File downloaded successfully to ${path}!`)
 							})
-						} else if (stats.isDirectory()) {
+						} else if (stats?.isDirectory()) {
 							const realpath = `${path}/${url.split('/').pop()}`
 							self.log('info', `Path is a directory, saving inside. Path: ${realpath} URL: ${url}`)
 							const ws = createWriteStream(realpath)
@@ -73,12 +76,14 @@ export function UpdateActions(self: FileDownloadInstance): void {
 								console.log(`File downloaded successfully to ${realpath}!`)
 								self.downloaded = true
 								self.downloading = false
+								self.unpauseTimer()
 								self.checkFeedbacks('downloading', 'downloaded')
 							})
 						} else {
 							self.log('error', 'Path is neither a file nor a directory.')
 							self.downloaded = false
 							self.downloading = false
+							self.unpauseTimer()
 							self.checkFeedbacks('downloading', 'downloaded')
 						}
 					})

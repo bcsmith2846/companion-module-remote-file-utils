@@ -14,7 +14,6 @@ export function UpdateFeedbacks(self: FileDownloadInstance): void {
 			},
 			options: [],
 			callback: () => {
-				self.log('info', 'FEEDBACK1')
 				return self.downloading
 			},
 		},
@@ -28,7 +27,6 @@ export function UpdateFeedbacks(self: FileDownloadInstance): void {
 			},
 			options: [],
 			callback: () => {
-				self.log('info', 'FEEDBACK')
 				return self.downloaded && !self.downloading
 			},
 		},

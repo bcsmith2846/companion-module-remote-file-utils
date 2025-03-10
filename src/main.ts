@@ -13,6 +13,7 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 	url: string | undefined = undefined
 	file: string | undefined = undefined
 	timer: NodeJS.Timeout | undefined = undefined
+	timerPaused: boolean = false
 
 	constructor(internal: unknown) {
 		super(internal)
@@ -28,7 +29,8 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 		this.updateVariableDefinitions() // export variable definitions
 		this.timer = setInterval(() => {
 			const file = this.getVariableValue('file')?.toString()
-			if (!file) return
+			if (!file || this.timerPaused) return
+			this.log('debug', 'Timer tick')
 			stat(file, (err, stats) => {
 				if (err) {
 					this.log(
@@ -37,9 +39,9 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 					)
 					this.downloaded = false
 				} else {
-					if (stats.isFile()) {
+					if (stats?.isFile()) {
 						this.downloaded = true
-					} else if (stats.isDirectory()) {
+					} else if (stats?.isDirectory()) {
 						const realpath = `${this.getVariableValue('file')}/${this.getVariableValue('url')?.toString().split('/').pop()}`
 						stat(realpath, (err, stats) => {
 							if (err) {
@@ -47,7 +49,7 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 								this.downloading = false
 								this.checkFeedbacks('downloading', 'downloaded')
 							}
-							if (stats.isFile()) {
+							if (stats?.isFile()) {
 								this.downloaded = true
 								this.downloading = false
 								this.checkFeedbacks('downloading', 'downloaded')
@@ -75,6 +77,14 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 	async configUpdated(config: FileDownloadConfig): Promise<void> {
 		this.config = config
 		this.setVariableValues({ ...config })
+	}
+
+	pauseTimer(): void {
+		this.timerPaused = true
+	}
+
+	unpauseTimer(): void {
+		this.timerPaused = false
 	}
 
 	// Return config fields for web config
