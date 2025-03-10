@@ -3,7 +3,7 @@
 	"name": "file-download",
 	"shortname": "file-download",
 	"description": "A module to download files from a URL to the Companion server.",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"license": "MIT",
 	"repository": "git+https://github.com/bcsmith2846/companion-module-file-download.git",
 	"bugs": "https://github.com/bcsmith2846/companion-module-file-download/issues",
