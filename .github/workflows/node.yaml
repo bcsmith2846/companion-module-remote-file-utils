@@ -77,7 +77,7 @@ jobs:
           gh release create "$tag" \
               --repo "${{ github.repository }}" \
               --title "${tag#v}" \
-              --generate-notes
+              --generate-notes \
               generic-file-upload-$tag-node22-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
