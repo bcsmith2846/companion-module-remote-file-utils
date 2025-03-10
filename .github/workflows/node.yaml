@@ -21,6 +21,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
+      - name: Update version if needed
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        run: |
+          ./scripts/update-version.ps1 ${tag#v}
+        env:
+          tag: ${{ github.ref_name }}
+          CI: true
       - name: Prepare Environment
         run: |
           corepack enable
