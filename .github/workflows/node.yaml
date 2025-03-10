@@ -57,7 +57,6 @@ jobs:
           CI: true
       - name: Release
         id: release
-        uses:
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         run: |
           gh release create "$tag" \
