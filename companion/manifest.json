@@ -1,6 +1,6 @@
 {
-	"id": "companion-module-file-download",
-	"name": "companion-module-file-download",
+	"id": "file-download",
+	"name": "file-download",
 	"shortname": "file-download",
 	"description": "A module to download files from a URL to the Companion server.",
 	"version": "0.2.0",
