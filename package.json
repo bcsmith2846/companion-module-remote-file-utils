@@ -1,6 +1,6 @@
 {
 	"name": "companion-module-file-download",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"main": "dist/main.js",
 	"type": "module",
 	"scripts": {
@@ -16,10 +16,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitfocus/companion-module-your-module-name.git"
+		"url": "git+https://github.com/bcsmith2846/companion-module-file-download.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.11.2"
+		"@companion-module/base": "^1.11.3"
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.1.1",

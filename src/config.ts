@@ -1,4 +1,4 @@
-import type { SomeCompanionConfigField } from '@companion-module/base/dist/index.js'
+import type { SomeCompanionConfigField } from '@companion-module/base'
 
 export interface FileDownloadConfig {
 	url: string
