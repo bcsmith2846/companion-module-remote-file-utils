@@ -9,8 +9,8 @@ on:
   pull_request:
 
 jobs:
-  lint:
-    name: Lint
+  build:
+    name: Lint and Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -47,6 +47,27 @@ jobs:
         run: |
           yarn lint
         env:
+          CI: true
+      - name: Package
+        id: package_release
+        uses:
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        run: |
+          yarn package
+        env:
+          CI: true
+      - name: Release
+        id: release
+        uses:
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        run: |
+          gh release create "$tag" \
+              --repo "${{ github.repository }}" \
+              --title "${tag#v}" \
+              --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
           CI: true
 
   # Uncomment this to enable running unit tests

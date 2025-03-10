@@ -6,3 +6,4 @@ package-lock.json
 DEBUG-*
 /.yarn
 /companion-module-*.tgz
+/file-download-*.tgz
