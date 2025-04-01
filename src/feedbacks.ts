@@ -14,7 +14,7 @@ export function UpdateFeedbacks(self: FileDownloadInstance): void {
 			},
 			options: [],
 			callback: () => {
-				return self.downloading
+				return self.config.downloading
 			},
 		},
 		downloaded: {
@@ -27,7 +27,34 @@ export function UpdateFeedbacks(self: FileDownloadInstance): void {
 			},
 			options: [],
 			callback: () => {
-				return self.downloaded && !self.downloading
+				return self.config.downloaded && !self.config.downloading
+			},
+		},
+		uploading: {
+			name: 'uploading',
+			type: 'boolean',
+			showInvert: false,
+
+			defaultStyle: {
+				bgcolor: combineRgb(255, 0, 0),
+				color: combineRgb(0, 0, 0),
+			},
+			options: [],
+			callback: () => {
+				return self.config.uploading
+			},
+		},
+		uploaded: {
+			name: 'uploaded',
+			type: 'boolean',
+			showInvert: false,
+			defaultStyle: {
+				bgcolor: combineRgb(0, 255, 0),
+				color: combineRgb(0, 0, 0),
+			},
+			options: [],
+			callback: () => {
+				return self.config.uploaded && !self.config.uploading
 			},
 		},
 	})

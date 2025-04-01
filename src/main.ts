@@ -8,10 +8,6 @@ import { checkFeedbackUpdates } from './utils.js'
 
 export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 	config!: FileDownloadConfig // Setup in init()
-	downloaded: boolean = false
-	downloading: boolean = false
-	url: string | undefined = undefined
-	file: string | undefined = undefined
 	timer: NodeJS.Timeout | undefined = undefined
 	timerPaused: boolean = false
 
@@ -20,7 +16,21 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 	}
 
 	async init(config: FileDownloadConfig): Promise<void> {
-		this.config = config
+		const configDefaults = {
+			downloaded: false,
+			downloading: false,
+			downloadURL: undefined,
+			downloadFile: undefined,
+			uploaded: false,
+			uploading: false,
+			uploadURL: undefined,
+			uploadFile: undefined,
+		}
+
+		this.config = {
+			...configDefaults,
+			...config,
+		}
 
 		this.updateStatus(InstanceStatus.Ok)
 
@@ -28,7 +38,9 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.startFeedbackUpdateTimer() // Start the timer that dynamically updates feedbacks
-		this.setVariableValues({ url: this.url, file: this.file, downloaded: this.downloaded })
+		this.setVariableValues({
+			...configDefaults,
+		})
 	}
 	// When module gets deleted
 	async destroy(): Promise<void> {

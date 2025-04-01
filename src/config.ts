@@ -1,8 +1,14 @@
 import type { SomeCompanionConfigField } from '@companion-module/base'
 
 export interface FileDownloadConfig {
-	url: string | undefined
-	file: string | undefined
+	downloaded: boolean
+	downloading: boolean
+	downloadURL: string | undefined
+	downloadFile: string | undefined
+	uploaded: boolean
+	uploading: boolean
+	uploadURL: string | undefined
+	uploadFile: string | undefined
 	username: string | undefined
 	password: string | undefined
 }
