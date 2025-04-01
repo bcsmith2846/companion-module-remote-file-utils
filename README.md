@@ -1,4 +1,4 @@
-# companion-module-file-download
+# companion-module-remote-file-utils
 
 See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 

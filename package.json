@@ -1,6 +1,6 @@
 {
-	"name": "companion-module-file-download",
-	"version": "0.6.1",
+	"name": "companion-module-remote-file-utils",
+	"version": "1.0.0",
 	"main": "dist/main.js",
 	"type": "module",
 	"scripts": {
@@ -16,7 +16,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bcsmith2846/companion-module-file-download.git"
+		"url": "git+https://github.com/bcsmith2846/companion-module-remote-file-utils.git"
 	},
 	"dependencies": {
 		"@companion-module/base": "^1.11.3"

@@ -1,12 +1,12 @@
 {
-	"id": "file-download",
-	"name": "file-download",
-	"shortname": "file-download",
-	"description": "A module to download files from a URL to the Companion server.",
-	"version": "0.6.1",
+	"id": "remote-file-utils",
+	"name": "remote-file-utils",
+	"shortname": "remote-file-utils",
+	"description": "A module to work with remote files when using the Companion server.",
+	"version": "1.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/bcsmith2846/companion-module-file-download.git",
-	"bugs": "https://github.com/bcsmith2846/companion-module-file-download/issues",
+	"repository": "git+https://github.com/bcsmith2846/companion-module-remote-file-utils.git",
+	"bugs": "https://github.com/bcsmith2846/companion-module-remote-file-utils/issues",
 	"maintainers": [
 		{
 			"name": "Brenden Smith",
@@ -21,6 +21,6 @@
 	},
 	"legacyIds": [],
 	"manufacturer": "Generic",
-	"products": ["File download"],
+	"products": ["Remote File Utilities"],
 	"keywords": []
 }
