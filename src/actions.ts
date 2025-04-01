@@ -27,7 +27,7 @@ export function UpdateActions(self: FileDownloadInstance): void {
 				{
 					type: 'textinput',
 					id: 'url',
-					label: 'URL of upload target (without file name)',
+					label: 'URL of upload target (including file name in URL)',
 					regex: `/${RegexPatterns.URL.source}/i`,
 				},
 				{

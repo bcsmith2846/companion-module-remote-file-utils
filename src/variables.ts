@@ -9,6 +9,6 @@ export function UpdateVariableDefinitions(self: FileDownloadInstance): void {
 		{ variableId: 'uploaded', name: 'Is the file uploaded?' },
 		{ variableId: 'uploading', name: 'Is the file uploading?' },
 		{ variableId: 'uploadFile', name: 'Local file to upload' },
-		{ variableId: 'uploadURL', name: 'File upload URL (without file name)' },
+		{ variableId: 'uploadURL', name: 'File upload URL (with file name)' },
 	])
 }
