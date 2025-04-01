@@ -38,7 +38,6 @@ export class FileDownloadInstance extends InstanceBase<FileDownloadConfig> {
 
 	async configUpdated(config: FileDownloadConfig): Promise<void> {
 		this.config = config
-		this.setVariableValues({ ...config })
 	}
 
 	startFeedbackUpdateTimer(): void {

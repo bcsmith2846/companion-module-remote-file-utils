@@ -27,7 +27,6 @@ export const checkFeedbackUpdates = (self: FileDownloadInstance): void => {
 				stat(realpath, (err, stats) => {
 					if (err) {
 						self.downloaded = false
-						self.downloading = false
 						self.checkFeedbacks('downloading', 'downloaded')
 					}
 					if (stats?.isFile()) {
@@ -36,7 +35,6 @@ export const checkFeedbackUpdates = (self: FileDownloadInstance): void => {
 						self.checkFeedbacks('downloading', 'downloaded')
 					} else {
 						self.downloaded = false
-						self.downloading = false
 						self.checkFeedbacks('downloading', 'downloaded')
 					}
 				})
@@ -45,6 +43,7 @@ export const checkFeedbackUpdates = (self: FileDownloadInstance): void => {
 				self.checkFeedbacks('downloading', 'downloaded')
 			}
 		}
+		self.setVariableValues({ downloaded: self.downloaded })
 	})
 }
 
@@ -63,10 +62,10 @@ export const doFileDownload = async (
 		return
 	const url: string = event.options.url
 	const file: string = event.options.file
-	self.setVariableValues({ url, file })
 	self.file = file
 	self.url = url
 	self.downloading = true
+	self.setVariableValues({ url, file, downloaded: !self.downloading })
 	self.checkFeedbacks('downloading')
 	self.pauseTimer()
 	get(url, (res) => {
@@ -93,6 +92,7 @@ export const doFileDownload = async (
 					self.unpauseTimer()
 					self.checkFeedbacks('downloading', 'downloaded')
 					console.log(`File downloaded successfully to ${file}!`)
+					self.setVariableValues({ downloaded: self.downloaded })
 				})
 			} else if (stats?.isDirectory()) {
 				const realpath = `${file}/${url.split('/').pop()}`
@@ -116,4 +116,14 @@ export const doFileDownload = async (
 			}
 		})
 	})
+}
+
+export const getAuthHeader = (self: FileDownloadInstance): Record<string, string> | undefined => {
+	if (!self.config || self.config.username == undefined || self.config.password == undefined) {
+		return undefined
+	}
+	const token = Buffer.from(`${self.config.username}:${self.config.password}`).toString('base64')
+	return {
+		Authorization: `Basic ${token}`,
+	}
 }
