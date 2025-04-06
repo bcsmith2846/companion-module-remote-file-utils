@@ -70,15 +70,15 @@ jobs:
         id: release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         run: |
-          mv pkg generic-file-upload \
+          mv pkg generic-file-utils \
             && \
-          zip -r generic-file-upload-$tag-node22-release.zip generic-file-upload \
+          zip -r generic-file-utils-$tag-node22-release.zip generic-file-utils \
             && \
           gh release create "$tag" \
               --repo "${{ github.repository }}" \
               --generate-notes \
               --title "v${tag#v}" \
-              generic-file-upload-$tag-node22-release.zip
+              generic-file-utils-$tag-node22-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
